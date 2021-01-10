@@ -66,7 +66,7 @@ class GenerateStrftimeGettersBehavior extends Behavior
         
     private function isDateColumn(Column $column): bool
     {
-        $type   = $column->getType();
+        $type = $column->getType();
         return in_array($type, self::SQL_DATE_TYPES);
     }
     
