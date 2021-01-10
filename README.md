@@ -23,7 +23,7 @@ Installation
 
 From command line:
 
-```
+```bash
 composer config repositories.repo-name vcs https://github.com/mringler/propel-generate-strftime-getters-behavior
 composer require mringler/propel-generate-strftime-getters-behavior:dev-master
 ```
