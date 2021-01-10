@@ -78,30 +78,30 @@ class GenerateStrftimeGettersBehavior extends Behavior
         return array_filter($allColumns, $dateColumnFilter);
     }
     
-    private function getLocalizedGetterCodeForColumn(Column $column): string
-    {
-        $dataProperty   = $column->getName();
-        $functionName   = $this->buildFunctionName($column);
-        return sprintf(self::FUNCTION_TEMPLATE, $functionName, $dataProperty);
-    }
-    
     private function buildFunctionName(Column $column): string
     {
         $columnName = $column->getPhpName();
-        $format      = $this->getValidatedFunctionNameFormat();
+        $format     = $this->getValidatedFunctionNameFormat();
         return sprintf($format, $columnName);
     }
     
     private function getValidatedFunctionNameFormat(): string
     {
         $format             = $this->parameters['function_name_format'] ?? 'get%sUsingLocale';
-        $noofReplacments    =  substr_count($format, '%s');
+        $noofReplacments    = substr_count($format, '%s');
         if( $noofReplacments !== 1)
         {
             $msg = sprintf(self::WRONG_FUNCTION_NAME_FORMAT_MESSAGE, $format, $noofReplacments);
             throw new \InvalidArgumentException($msg);
         }
         return $format;
+    }
+    
+    private function getLocalizedGetterCodeForColumn(Column $column): string
+    {
+        $functionName   = $this->buildFunctionName($column);
+        $dataProperty   = $column->getName();
+        return sprintf(self::FUNCTION_TEMPLATE, $functionName, $dataProperty);
     }
     
     const FUNCTION_TEMPLATE = <<<'EOT'
