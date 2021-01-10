@@ -45,7 +45,7 @@ class GenerateStrftimeGettersBehavior extends Behavior
         return array_map($columnGetter, $columnNames);
     }
     
-    private function getDateColumnsByName(string $columnName): Column
+    private function getDateColumnByName(string $columnName): Column
     {
         $table = $this->getTable();
         if( ! $table->hasColumn($columnName))
