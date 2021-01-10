@@ -15,7 +15,7 @@ $dateFormat = 'l s. F Y';
 echo $modelObject->getMyDateColumn($dateFormat); // still outputs english day and month names, i.e. "Monday, 9. January 2021"
 
 $strftimeFormat = '%A, %e. %B %Y';
-$modelObject->getMyDateColumnUsingLocale($strftimeFormat); // outputs localized day and month, i.e. "Montag, 9. Januar 2021"
+echo $modelObject->getMyDateColumnUsingLocale($strftimeFormat); // outputs localized day and month, i.e. "Montag, 9. Januar 2021"
 ```
 
 Installation
