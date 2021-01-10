@@ -1,0 +1,27 @@
+{
+    "name" : "mringler/propel-generate-strftime-getters-behavior",
+	"description": "PHP Propel behavior that adds functions to models allowing to format date columns with localization.",
+    "keywords": [ "propel", "behavior", "strftime", "date", "datetime", "localization" ],
+    "license": "MIT",
+	"authors": [
+        {
+            "name": "Moritz Ringler",
+            "homepage": "https://github.com/mringler"
+        }
+    ],
+    "version": "0.1",
+    "require": {
+        "php": ">=5.4",
+        "propel/propel": "~2.0@dev"
+    },
+    "type" : "propel-behavior",
+    "extra": {
+        "name": "generate_strftime_getters",
+        "class": "MRingler\\Propel\\Behavior\\GenerateStrftimeGetters\\GenerateStrftimeGettersBehavior"
+    },
+	"autoload": {
+        "psr-4": {
+            "MRingler\\Propel\\Behavior\\GenerateStrftimeGetters\\" : "src"
+        }
+    }
+}
