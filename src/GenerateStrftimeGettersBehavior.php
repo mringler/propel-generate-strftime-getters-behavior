@@ -41,7 +41,7 @@ class GenerateStrftimeGettersBehavior extends Behavior
         }
         $rawColumns     = explode(',', $columnParam);
         $columnNames    = array_map('trim', $rawColumns);
-        $columnGetter   = [$this, 'getDateColumnsByName'];
+        $columnGetter   = [$this, 'getDateColumnByName'];
         return array_map($columnGetter, $columnNames);
     }
     
