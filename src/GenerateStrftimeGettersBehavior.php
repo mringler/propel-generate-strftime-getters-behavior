@@ -80,8 +80,8 @@ class GenerateStrftimeGettersBehavior extends Behavior
     
     private function buildFunctionName(Column $column): string
     {
-        $columnName = $column->getPhpName();
         $format     = $this->getValidatedFunctionNameFormat();
+        $columnName = $column->getPhpName();
         return sprintf($format, $columnName);
     }
     
