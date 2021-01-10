@@ -35,9 +35,11 @@ Or adding manually to composer.json before running `composer update`:
     "require": {
         "mringler/propel-generate_strftime_getters-behavior": "dev-master"
     },
-    {
-      "type": "vcs",
-      "url": "https://github.com/mringler/propel-generate-strftime-getters-behavior.git"
+    "repositories": {
+        "repo-name": {
+            "type": "vcs",
+            "url": "https://github.com/mringler/propel-generate-strftime-getters-behavior.git"
+        }
     }
 }
 ```
