@@ -71,9 +71,9 @@ Recognized types are DATE, DATETIME and TIMESTAMP.
 Adjust method name
 ---------
 
-Method name can be adjusted by "function_name_format" parameter.
+The generated method name can be adjusted by supplying a format string through the "function_name_format" parameter.
 
-Supplied value must be a string using "%s", which will be replaced by the name of the column.
+The format string must contain exaclty one "%s", which will be replaced by the name of the column.
 
 For example, to generate methods like `MyTable::getMyColumnUsingStrftime($format=null)`, set it to "`get%sUsingStrftime`":
 
