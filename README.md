@@ -47,6 +47,8 @@ Or adding manually to composer.json before running `composer update`:
 Usage
 -----
 
+Add behavior declaration in `schema.xml`:
+
 ```xml
 <table name="MyTable">
   <column name="my_timestamp" phpName="MyTimestamp" type="TIMESTAMP" />
@@ -57,7 +59,7 @@ Usage
 </table>
 ```
 
-will generate additional methods for every column in the table with a time-based type: 
+After rebuilding the model with `propel model:build`, the base model class will have additional methods for every column in the table with a time-based type: 
 
 ```php
 MyTable::getMyTimestampUsingLocale($format=null);
