@@ -32,15 +32,15 @@ Or adding manually to composer.json before running `composer update`:
 
 ```json
 {
-    "require": {
-        "mringler/propel-generate_strftime_getters-behavior": "dev-master"
-    },
-    "repositories": {
-        "repo-name": {
-            "type": "vcs",
-            "url": "https://github.com/mringler/propel-generate-strftime-getters-behavior.git"
-        }
+  "require": {
+    "mringler/propel-generate_strftime_getters-behavior": "dev-master"
+  },
+  "repositories": {
+    "repo-name": {
+      "type": "vcs",
+      "url": "https://github.com/mringler/propel-generate-strftime-getters-behavior.git"
     }
+  }
 }
 ```
 
@@ -49,12 +49,11 @@ Usage
 
 ```xml
 <table name="MyTable">
-	<column name="my_timestamp" phpName="MyTimestamp" type="TIMESTAMP" />
-	<column name="my_datetime" phpName="MyDatetime" type="DATETIME" />
-	<column name="my_date" phpName="MyDate" type="DATE" />
-	...
-	
-    <behavior name="generate_strftime_getters"/>
+  <column name="my_timestamp" phpName="MyTimestamp" type="TIMESTAMP" />
+  <column name="my_datetime" phpName="MyDatetime" type="DATETIME" />
+  <column name="my_date" phpName="MyDate" type="DATE" />
+  ...
+  <behavior name="generate_strftime_getters"/>
 </table>
 ```
 
@@ -79,7 +78,7 @@ For example, to generate methods like `MyTable::getMyColumnUsingStrftime($format
 
 ```xml
 <behavior name="generate_strftime_getters">
-	<parameter name="function_name_format" value="get%sUsingStrftime" />
+  <parameter name="function_name_format" value="get%sUsingStrftime" />
 </behavior>
 ```
 
@@ -90,10 +89,10 @@ To generate the localized getters for only some columns, use the `columns` param
 
 ```xml
 <table name="MyTable">
-	...
-    <behavior name="generate_strftime_getters">
-		<parameter name="columns" value="my_datetime, my_date" />
-	</behavior>
+  ...
+  <behavior name="generate_strftime_getters">
+    <parameter name="columns" value="my_datetime, my_date" />
+  </behavior>
 </table>
 ```
 
