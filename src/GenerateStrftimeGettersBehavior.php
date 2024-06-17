@@ -19,7 +19,9 @@ class GenerateStrftimeGettersBehavior extends Behavior
 {
     protected $parameters = array(
         'function_name_format' => 'get%sUsingLocale',
-        'columns'              => null
+        'columns'              => null,
+        'use_intl'             => false,
+        'default_locale'       => 'null'
     );
     
     const SQL_DATE_TYPES = ['DATE', 'DATETIME', 'TIMESTAMP'];
@@ -88,10 +90,10 @@ class GenerateStrftimeGettersBehavior extends Behavior
     private function getValidatedFunctionNameFormat(): string
     {
         $format             = $this->parameters['function_name_format'] ?? 'get%sUsingLocale';
-        $noofReplacments    = substr_count($format, '%s');
-        if( $noofReplacments !== 1)
+        $noofReplacements    = substr_count($format, '%s');
+        if( $noofReplacements !== 1)
         {
-            $msg = sprintf(self::WRONG_FUNCTION_NAME_FORMAT_MESSAGE, $format, $noofReplacments);
+            $msg = sprintf(self::WRONG_FUNCTION_NAME_FORMAT_MESSAGE, $format, $noofReplacements);
             throw new \InvalidArgumentException($msg);
         }
         return $format;
@@ -101,10 +103,22 @@ class GenerateStrftimeGettersBehavior extends Behavior
     {
         $functionName   = $this->buildFunctionName($column);
         $dataProperty   = $column->getName();
-        return sprintf(self::FUNCTION_TEMPLATE, $functionName, $dataProperty);
+        $useIntl =  array_key_exists('use_intl', $this->parameters) && !in_array($this->parameters['use_intl'], [false, 'false', 0, null], true);
+        $locale = $this->getDefaultLocale();
+
+        return $useIntl
+            ? sprintf(self::FUNCTION_TEMPLATE_INTL, $functionName, $locale, $dataProperty)
+            : sprintf(self::FUNCTION_TEMPLATE_STRFTIME, $functionName, $dataProperty);
+    }
+
+    protected function getDefaultLocale(): string
+    {
+        $locale = $this->parameters['default_locale'] ?? 'null';
+
+        return $locale === 'null' ? $locale : "'$locale'";
     }
     
-    const FUNCTION_TEMPLATE = <<<'EOT'
+    const FUNCTION_TEMPLATE_STRFTIME = <<<'EOT'
     
 /**
  * Get the [optionally formatted] temporal [date] column value using strftime, which supports localization.
@@ -119,14 +133,13 @@ class GenerateStrftimeGettersBehavior extends Behavior
  * @link http://php.net/strftime
  * @see strftime()
  */
-public function %s($format = null)
+public function %s(?string $format = null)
 {
     $value = $this->%s;
     if ($format === null) {
         return $value;
     }
-    if ( ! $value instanceof \DateTimeInterface)
-    {
+    if ( !$value instanceof \DateTimeInterface) {
         return null;
     }
     return strftime($format, $value->getTimestamp());
@@ -135,9 +148,40 @@ EOT;
     
     const WRONG_FUNCTION_NAME_FORMAT_MESSAGE = <<< 'EOT'
 Error when resolving behavior "localized_date": 
-    Parameter "function_name_format" must contain exactly one occurence of "%%s"
+    Parameter "function_name_format" must contain exactly one occurrence of "%%s"
     i.e. "get%%sWithLocalNames" to generate function names like "getMyDateColumnWithLocalNames()"
     
     Supplied value is "%s" (%d occurrences)
 EOT;
+
+
+const FUNCTION_TEMPLATE_INTL = <<<'EOT'
+    
+/**
+ * Get the [optionally formatted] temporal [date] column value using IntlDateFormatter, which supports localization.
+ *
+ * @param string|null $format The date/time format string ({@see https://unicode-org.github.io/icu/userguide/format_parse/datetime/#datetime-format-syntax}).
+ *   If format is NULL, then the raw DateTime object will be returned.
+ *
+ * @return string|DateTime|null Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
+ *
+ * @throws PropelException - if unable to parse/validate the date/time value.
+ *
+ * @link https://www.php.net/manual/en/intldateformatter.formatobject.php
+ */
+public function %s(?string $format = null, ?string $locale = %s)
+{
+    $value = $this->%s;
+    if ($format === null) {
+        return $value;
+    }
+
+    if (!$value instanceof \DateTimeInterface) {
+        return null;
+    }
+
+    return \IntlDateFormatter::formatObject($value, $format, $locale);
+}
+EOT;
+    
 }
